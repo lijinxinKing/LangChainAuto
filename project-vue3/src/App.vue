@@ -1,18 +1,37 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <MyComponent  @some-event=""callback />
+  <h1>  {{ message }} </h1>
+  <MyComponent @onEvent="getDataHandler"/>
+  <MyComponent :title="title"/>
+  <MyLifeCycle />
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import MyComponent from './components/MyComponent.vue'
-
+import MyLifeCycle from './components/MyLifeCycle.vue'
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    MyComponent
+    MyComponent,
+    MyLifeCycle
+  },
+  data(){
+    return{
+      title:{
+        type:String,
+        default:'Hello Vue 3!'
+      },
+      message: 'Hello My Component!'
+    }
+  },
+  methods:{
+    getDataHandler(data){
+      console.log(data)
+      this.message = data
+    }
   }
 }
 </script>

@@ -1,21 +1,31 @@
 <template>
-    <h1>
-        {{ msg }}
-    </h1>
-    <button @click="$emit('update:msg', 'Hello Vue 3!')">
-        Emit Event
-    </button>
+  <div>
+    <h1>MyComponent</h1>
+    <button @click="sendMessage">Send Message</button>
+  </div>
 </template>
 <script>
-export default {
-  name: 'MyCompoent',
+export default{
+  name: 'MyComponent',
   props: {
-    msg: String
+    title: String
   },
-  methods: {
-    submit() {
-      this.$emit('someEvent')
+  data(){
+    return{
+      data: 'Hello from MyComponent',
+      messsage:'我是MyComponent组件'
     }
   },
+  methods:{
+    sendMessage(){
+      this.$emit('onEvent', this.messsage)
+    }
+  }
 }
 </script>
+<!-- Add "scoped" attribute to limit CSS to this component only 只在当前组件中生效，其他组件不会变 -->
+<style scoped>
+h1{
+  color: red;
+}
+</style>
