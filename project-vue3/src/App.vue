@@ -1,30 +1,42 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <h1>  {{ message }} </h1>
-  <MyComponent @onEvent="getDataHandler"/>
-  <MyComponent :title="title"/>
-  <MyLifeCycle />
+  <MyComponent></MyComponent>
+  <MyProps :title="title"></MyProps>
+  <MyEmit @onEvent="getDataHandle"></MyEmit>
+  <p>{{ message }}</p>
+  <MyLifeCycleVue ></MyLifeCycleVue>
+  <MySWiperVue></MySWiperVue>
+  <MyAxios></MyAxios>
+  <MyRouter></MyRouter>
+  <MyVuex></MyVuex>
+  <p>counter:{{ $store.state.counter }}</p>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import MyComponent from './components/MyComponent.vue'
-import MyLifeCycle from './components/MyLifeCycle.vue'
+import MyProps from './components/MyProps.vue'
+import MyEmit from './components/MyEmit.vue'
+import MyLifeCycleVue from './components/MyLifeCycle.vue'
+import MySWiperVue from './components/MySWiper.vue'
+import MyAxios from './components/MyAxios.vue'
+import MyRouter from './components/MyRouter.vue'
+import MyVuex from './components/MyVuex.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     MyComponent,
-    MyLifeCycle
+    MyProps,
+    MyEmit,
+    MyLifeCycleVue,
+    MySWiperVue,
+    MyAxios,
+    MyRouter,
+    MyVuex
   },
   data(){
     return{
-      title:{
-        type:String,
-        default:'Hello Vue 3!'
-      },
-      message: 'Hello My Component!'
+      title:"传递数据",
+      message: ''
     }
   },
   methods:{
