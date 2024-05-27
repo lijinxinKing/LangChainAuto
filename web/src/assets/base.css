@@ -1,0 +1,56 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --color-text: #606266;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  color: var(--color-text);
+}
+
+a {
+  text-decoration: none;
+  transition: 0.4s;
+  color: var(--color-text);
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+i {
+  display: flex;
+  place-items: center;
+  place-content: center;
+  width: 16px;
+  height: 16px;
+
+  color: var(--color-text);
+}
+
+/* 滚动 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  /* 滑块部分 */
+  border-radius: 4px;
+  background-color: #c1c1c1;
+}
+::-webkit-scrollbar-track {
+  /* 轨道部分 */
+  background: #f6f6f6;
+  border-radius: 5px;
+}

@@ -1,27 +1,28 @@
 from flask import Flask,request
 from flask_cors import CORS
+from utils import LLMUtils
+import json 
+from langchain_core.prompts import PromptTemplate
 
- 
 app=Flask(__name__)
 CORS(app)
- 
+
 @app.route('/')
 def index():
-    return 'Hello Flask!!!'
+    return 'Hello AI Auto Agent !!!'
  
-@app.route('/api/axios')
-def msg():
-    return '需要传递给前端的数据'
- 
-@app.route('/api/msg',methods={'POST'})
-def message():
-    if request.data:
-        res=request.data
+@app.route('/ask',methods=['POST'])
+def post():
+    if request.form:
+        res = request.form
         print(res)
-        # 这里传过来的是bytes类型数据，所以简单处理了一下，但这里主要说明数据是成功传输了过来
-        res1=res.decode('utf-8')
-        print(res1)
-        return '获取数据成功'
+        text = json.loads(list(res.keys())[0])
+        content = text[0].get('content')
+        role = text[0].get('role')
+        print(content)
+        print(role)
+        oout = LLMUtils.GetOut(content)
+        return str(oout)
     else:
         return '没有数据'
  
