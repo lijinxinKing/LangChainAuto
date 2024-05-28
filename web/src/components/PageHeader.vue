@@ -2,20 +2,20 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ChatRound } from "@element-plus/icons-vue";
+import homeLogo from "../assets/home_logo.png";
 
 const router = useRouter();
-
 interface Nav {
   path: string;
   title: string;
   icon: any;
 }
-
+let home_logo = homeLogo;
 // 导航列表
 const navList = ref<Nav[]>([
   {
-    path: "/aiChat",
-    title: "AI工具",
+    path: "/AIAuto",
+    title: "CSW AI Auto Agent",
     icon: ChatRound,
   },
 ]);
@@ -39,12 +39,14 @@ const logoImgClickHandle = () => {
 <template>
   <div class="page-header">
     <div class="page-header-wrapper">
-      <!-- logo  src="../assets/home_logo.png" JSON.stringify(chatList.value) -->
+      <!-- logo  src="../assets/home_logo.png" JSON.stringify(chatList.value)  
+        https://home.lenovo.com/static/img/home_logo.40e29e52.png -->
       <el-image
-        class="logo-image"
-        
-        src="https://home.lenovo.com/static/img/home_logo.40e29e52.png"
-        fit="cover"
+        class="logo-image"    
+        fit="fit"   
+        :src="home_logo"
+        alt="logo"
+
         @click="logoImgClickHandle"
       />
 

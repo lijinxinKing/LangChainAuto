@@ -6,9 +6,9 @@ const calendarValue = ref(new Date());
 
 <template>
   <main class="home-view">
-    <div class="calendar-box">
+    <!-- <div class="calendar-box">
       <el-calendar v-model="calendarValue" />
-    </div>
+    </div> -->
   </main>
 </template>
 

@@ -13,7 +13,7 @@ import { sparkConfig } from "@/config";
 import { copyToClipboard } from "@/utils/commonUtil.ts";
 import axios from 'axios'
 import { fa } from "element-plus/es/locales.mjs";
-
+import accIcon from "../assets/AI.png"
 // 聊天列表ref
 const aiChatListRef = ref();
 
@@ -23,6 +23,7 @@ let chatListObserver: MutationObserver;
 let chatList = ref<ChatItem[]>([]);
 // 当前加载回答的index
 let loadingIndex = ref<number | null | undefined>();
+let getIcon = accIcon
 
 // 连接星火的WebSocket实例
 onMounted(() => {
@@ -86,7 +87,6 @@ const sendQuestion = () => {
     // 发送按钮禁用状态
     return;
   }
-
   if (problemText.value?.trim()?.length <= 0) {
     // 输入问题文字是空字符串
     ElMessage.warning({ message: "请输入您想了解的内容..." });
@@ -121,17 +121,17 @@ const askSpark = () => {
 
   // 用Axios 和 Flask 间进行通信
   // 进行 Falsk 间的数据传递
-  console.log(JSON.stringify(chatList.value))
+  console.log('chatList.value:')
   let getData = ''
   axios.post('http://127.0.0.1:5000/ask',JSON.stringify(chatList.value)).then(res=>{
     console.log(res.data)
     getData = res.data
     if(res){
-      chatList.value.push({
-      role: "assistant",
-      content: "",
-    });
-    loadingIndex.value = chatList.value.length - 1;
+        chatList.value.push({
+        role: "assistant",
+        content: "",
+      });
+      loadingIndex.value = chatList.value.length - 1;
     }
     let resObj = res.data;
     
@@ -183,6 +183,9 @@ const wsMsgReceiveHandle = (res: WSResParams) => {
   //   loadingIndex.value = null;
   //   sendBtnDisabled.value = false;
   // }
+  wsMsgReceiveStatus.value = "receiveFinshed"
+  loadingIndex.value = null
+  sendBtnDisabled.value = false
 };
 
 /**
@@ -280,16 +283,16 @@ onBeforeUnmount(() => {
       <li class="ai-chat-item">
         <div class="ai-chat-avatar">
           <el-avatar
-            :size="40"
-            src="https://ydcqoss.ydcode.cn/static/officialhome/ydyx_avatar.png"
+            :size="50"
+            fit='contain'
+            :src="getIcon"
           />
         </div>
 
         <div class="ai-chat-content-box init-box">
-          <div class="ai-chat-title">Lenovo AI Auto Agent</div>
-          <div class="ai-chat-text">能够学习和理解人类的语言，进行多轮对话</div>
+          <div class="ai-chat-title">CSW AI Auto Agent</div>
+          <div class="ai-chat-text">为CSW自动化测试定制AI1.0版本，不仅支持多轮对话，还能回答关于项目的问题</div>
           <div class="ai-chat-text">
-            为CSW自动化测试定制AI1.0版本，不仅支持多轮对话，自动回答问题，还能回答关于项目的问题
           </div>
         </div>
       </li>
@@ -301,12 +304,13 @@ onBeforeUnmount(() => {
         <div class="ai-chat-avatar">
           <el-avatar
             v-if="item.role === 'assistant'"
-            :size="40"
-            src="https://ydcqoss.ydcode.cn/static/officialhome/ydyx_avatar.png"
+            :size="50"
+            fit="fit"
+            :src="getIcon"
           />
           <el-avatar
             v-if="item.role === 'user'"
-            :size="40"
+            :size="50"
             :icon="UserFilled"
           />
         </div>

@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     /** 路由懒加载的方式 **/
     {
-      path: "/aiChat",
+      path: "/AIAuto",
       name: "aiChat",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -29,7 +29,7 @@ const router = createRouter({
 router.afterEach((to, from, next) => {
   if (to.path === "/") {
     // 如果路由为"/"，则启动切换页面
-    router.push("/aiChat");
+    router.push("/AIAuto");
   }
 });
 

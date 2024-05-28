@@ -10,15 +10,18 @@ CORS(app)
 @app.route('/')
 def index():
     return 'Hello AI Auto Agent !!!'
- 
 @app.route('/ask',methods=['POST'])
 def post():
     if request.form:
         res = request.form
         print(res)
-        text = json.loads(list(res.keys())[0])
-        content = text[0].get('content')
-        role = text[0].get('role')
+        getAllKeys = list(res.keys())
+        print(getAllKeys[0])
+        text = json.loads(getAllKeys[0])
+        print(len(text))
+        textLene = len(text) - 1
+        content = text[textLene].get('content')
+        role = text[textLene].get('role')
         print(content)
         print(role)
         oout = LLMUtils.GetOut(content)
