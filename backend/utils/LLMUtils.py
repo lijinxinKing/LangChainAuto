@@ -47,7 +47,9 @@ llm = QianfanChatEndpoint(
     qianfan_ak=os.getenv('ERNIE_CLIENT_ID'),
     qianfan_sk=os.getenv('ERNIE_CLIENT_SECRET')
 )
+
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"),base_url=os.getenv("base_url"))
+
 def to_keywords(input_string):
     '''（英文）文本只保留关键字'''
     # 使用正则表达式替换所有非字母数字的字符为空格
@@ -61,25 +63,26 @@ def to_keywords(input_string):
     getstr = ' '.join(filtered_sentence)
     print(getstr)
     return getstr
-# 创建elastic search连接
-es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-# 列出所有es 中的index
-# Get a list of all indices in the cluster
-indices = es.cat.indices(format='json')
-# 查询所有索引
-all_indices = es.indices.get_alias("*").keys()
-# 替换成你的索引名称和查询条件
-index_name = list(all_indices)[0]
-print(index_name)
-query_body = {
-    "query": {
-        "match_all": {}
-    }
-}
 
-index_name = 'van34691_scheduleeyecaremodeandaccesstolocation'
 def search(query_string, top_n=3):
     # ES 的查询语言
+    # 创建elastic search连接
+    es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+    # 列出所有es 中的index
+    # Get a list of all indices in the cluster
+    indices = es.cat.indices(format='json')
+    # 查询所有索引
+    all_indices = es.indices.get_alias("*").keys()
+    # 替换成你的索引名称和查询条件
+    index_name = list(all_indices)[0]
+    print(index_name)
+    query_body = {
+        "query": {
+            "match_all": {}
+        }
+    }
+
+    index_name = 'van34691_scheduleeyecaremodeandaccesstolocation'
     search_query = {
         "match": {
             "keywords": to_keywords(query_string)
@@ -120,8 +123,7 @@ def build_prompt(prompt_template, **kwargs):
     return prompt_template.format(**inputs)
 
 prompt_template = """
-你是为CSW自动化测试定制AI1.0版本的机器人，不仅支持多轮对话，还能回答关于项目的问题。
-你的任务是回答用户问题
+你是为CSW自动化测试定制AI 1.0版本的机器人，不仅支持多轮对话，还能回答关于项目问题。
 用户问：
 {query}
 """

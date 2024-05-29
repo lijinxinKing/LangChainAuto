@@ -123,7 +123,7 @@ const askSpark = () => {
   // 进行 Falsk 间的数据传递
   console.log('chatList.value:')
   let getData = ''
-  axios.post('http://127.0.0.1:5000/ask',JSON.stringify(chatList.value)).then(res=>{
+  axios.post('http://10.119.150.151:5000/ask',JSON.stringify(chatList.value)).then(res=>{
     console.log(res.data)
     getData = res.data
     if(res){
@@ -291,7 +291,7 @@ onBeforeUnmount(() => {
 
         <div class="ai-chat-content-box init-box">
           <div class="ai-chat-title">CSW AI Auto Agent</div>
-          <div class="ai-chat-text">为CSW自动化测试定制AI1.0版本，不仅支持多轮对话，还能回答关于项目的问题</div>
+          <div class="ai-chat-text">为CSW自动化测试定制AI 1.0版本，支持多轮对话，能回答有关项目的问题</div>
           <div class="ai-chat-text">
           </div>
         </div>

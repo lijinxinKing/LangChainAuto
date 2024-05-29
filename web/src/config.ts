@@ -1,5 +1,5 @@
 // baseURL：配置api地址（以实际项目服务器地址为准）
-export const baseURL = "http://localhost:8087";
+export const baseURL = "http://10.119.150.151:8087";
 
 // 讯飞星火大模型的配置
 export const sparkConfig = {

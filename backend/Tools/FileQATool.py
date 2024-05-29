@@ -1,5 +1,7 @@
 from typing import List
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_community.embeddings import QianfanEmbeddingsEndpoint
+
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
@@ -7,8 +9,8 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.document_loaders.word_document import UnstructuredWordDocumentLoader
 from langchain.chains import RetrievalQA
 from langchain.llms import OpenAI
-
-
+from langchain_community.chat_models import QianfanChatEndpoint
+import os
 class FileLoadFactory:
     @staticmethod
     def get_loader(filename: str):
@@ -49,13 +51,11 @@ def ask_docment(
     documents = text_splitter.split_documents(raw_docs)
     if documents is None or len(documents) == 0:
         return "无法读取文档内容"
-    db = Chroma.from_documents(documents, OpenAIEmbeddings(model="text-embedding-ada-002"))
+    db = Chroma.from_documents(documents, QianfanEmbeddingsEndpoint(qianfan_ak=os.getenv('ERNIE_CLIENT_ID'), qianfan_sk=os.getenv('ERNIE_CLIENT_SECRET')))
     qa_chain = RetrievalQA.from_chain_type(
-        llm=OpenAI(
-            temperature=0,
-            model_kwargs={
-                "seed": 42
-            },
+        llm = QianfanChatEndpoint(
+            qianfan_ak = os.getenv('ERNIE_CLIENT_ID'),
+            qianfan_sk = os.getenv('ERNIE_CLIENT_SECRET')
         ),  # 语言模型
         chain_type="stuff",  # prompt的组织方式，后面细讲
         retriever=db.as_retriever()  # 检索器
@@ -65,7 +65,11 @@ def ask_docment(
 
 
 if __name__ == "__main__":
-    filename = "../data/2023年10月份销售计划.docx"
+    current_path = os.path.abspath(__file__)
+    # 获取当前路径的父路径
+    parent_path = os.path.dirname(current_path)
+    getParentPath =  os.path.dirname(parent_path)
+    filename = getParentPath + "/data/2023年10月份销售计划.pdf"
     query = "销售额达标的标准是多少？"
     response = ask_docment(filename, query)
     print(response)

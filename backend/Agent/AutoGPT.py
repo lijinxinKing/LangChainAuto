@@ -1,6 +1,7 @@
-import json
-from typing import List, Optional, Tuple
 
+from typing import List, Optional, Tuple
+import os
+import sys
 from langchain.memory.chat_memory import BaseChatMemory
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -13,10 +14,13 @@ from langchain_core.tools import render_text_description_and_args, render_text_d
 from langchain_openai import ChatOpenAI
 from pydantic import ValidationError
 from langchain_core.prompts import HumanMessagePromptTemplate
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 from Agent.Action import Action
-from Utils.CallbackHandlers import *
+from utils.CallbackHandlers import *
 
+from langchain_community.chat_models import QianfanChatEndpoint
+
+from dotenv import load_dotenv, find_dotenv
 
 class AutoGPT:
     """AutoGPT：基于Langchain实现"""
@@ -44,10 +48,9 @@ class AutoGPT:
         self.output_parser = PydanticOutputParser(pydantic_object=Action)
         self.robust_parser = OutputFixingParser.from_llm(
             parser=self.output_parser,
-            llm=ChatOpenAI(
-                model="gpt-3.5-turbo",
-                temperature=0,
-                model_kwargs={"seed": 42}
+            llm = QianfanChatEndpoint(
+                qianfan_ak=os.getenv('ERNIE_CLIENT_ID'),
+                qianfan_sk=os.getenv('ERNIE_CLIENT_SECRET')
             )
         )
 

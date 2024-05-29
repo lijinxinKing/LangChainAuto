@@ -4,7 +4,7 @@ from uuid import UUID
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.outputs import GenerationChunk, ChatGenerationChunk, LLMResult
 
-from Utils.PrintUtils import *
+from utils.PrintUtils import *
 
 
 class ColoredPrintHandler(BaseCallbackHandler):

@@ -5,16 +5,19 @@ from langchain_core.agents import AgentAction, AgentFinish
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from pydantic.v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 from langchain.agents import AgentExecutor, create_react_agent, AgentOutputParser
 from langchain_openai import ChatOpenAI
 from Tools import *
 from Tools.PythonTool import ExcelAnalyser
+import os
+import sys
 
 from dotenv import load_dotenv, find_dotenv
-
-from Utils.CallbackHandlers import ColoredPrintHandler
-from Utils.PrintUtils import THOUGHT_COLOR
+# Python  引入其他文件夹里的文件
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
+from utils.CallbackHandlers import ColoredPrintHandler
+from utils.PrintUtils import THOUGHT_COLOR
 
 # 加载环境变量
 _ = load_dotenv(find_dotenv())
@@ -104,7 +107,7 @@ def run_agent(agent, tools):
 def main():
     # 语言模型
     llm = ChatOpenAI(
-        model="gpt-4-turbo",
+        model="gpt-3.5-turbo",
         temperature=0,
         model_kwargs={
             "seed": 42
@@ -126,10 +129,15 @@ def main():
     ]
 
     parser = MyAgentOutputParser()
-
-    prompt = PromptTemplate.from_file("./prompts/main/main.txt")
+    current_path = os.path.abspath(__file__)
+        # 获取当前路径的父路径
+    parent_path = os.path.dirname(current_path)
+    #getParentPath =  os.path.dirname(parent_path)
+        # 文件读取
+    content = open(parent_path + '/prompts/main/main.txt', "r", encoding="utf-8").read()
+    prompt = PromptTemplate.from_template(content)
     prompt = prompt.partial(
-        work_dir="./data",
+        work_dir= "./data",
         format_instructions=parser.get_format_instructions()
     )
 
